@@ -11,8 +11,15 @@ server.get('/',(request, response) => {
     response.send('Server Working Fine......');
 })
 
+// Backend Routes 
 // require('./src/routes/backend/categories.routes')(server);
 require('./src/routes/backend/courses.routes')(server);
+require('./src/routes/backend/videos.routes')(server);
+
+// Frontend Routes 
+
+require('./src/routes/frontend/courses.routes')(server);
+
 
 server.get('*',(request, response) => {
     response.send('Page Not found......');

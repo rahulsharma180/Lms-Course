@@ -15,7 +15,8 @@ module.exports = app => {
     route.put('/update/',courseController.update);
 
 
-    route.delete('/delete/',courseController.delete);
+    route.put('/delete/',courseController.delete);
+    route.put('/multiple-delete/',courseController.multipleDelete);   
 
     app.use('/api/backend/courses',route);
 

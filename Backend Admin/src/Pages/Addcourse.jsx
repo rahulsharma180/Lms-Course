@@ -1,11 +1,11 @@
-import React, { useContext } from 'react'
+import React, { useContext, useEffect } from 'react'
 import Header from '../Common/Header'
 import Sidebar from '../Common/Sidebar'
 import DashboardItems from '../Common/DashboardItems'
 import Footer from '../Common/Footer'
 import { mainContext } from '../Context'
 import prev from '../img/generic-image-file-icon-hi.png'
-import { useNavigate } from 'react-router'
+import { useNavigate, useParams } from 'react-router'
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import axios, { toFormData } from 'axios'
@@ -15,7 +15,18 @@ import axios, { toFormData } from 'axios'
 function Addcourse() {
   let {changemenu} = useContext(mainContext);
 
+  let params = useParams()
+  
+  
+
   let navigate = useNavigate();
+
+
+  useEffect(() => {
+    if(params.course_id!=undefined || params.course_id!= ''){
+    console.log(params.course_id);}
+  }, [])
+
 
   let submitHandler = (event) => {
     event.preventDefault();

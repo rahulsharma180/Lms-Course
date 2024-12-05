@@ -298,3 +298,42 @@ exports.delete = async(request,response) => {
         response.send(res);
     })  
 }
+
+
+
+
+exports.multipleDelete = async(request,response) => {
+
+
+
+    
+    await coursesModel.updateMany(
+
+        {
+            _id :{ $in : request.body.ids}
+        },
+        {
+            $set : {deleted_at: Date.now()}
+
+        }
+    ) .then(() => {
+        const res = {
+            status : true,
+            message : 'Record delete successfully.',
+            
+        }
+    
+        response.send(res);
+
+    }).catch((error) => {
+       
+
+        const res = {
+            status : false,
+            message : 'Something went wrong !!',
+           
+        }
+    
+        response.send(res);
+    })  
+}

@@ -163,8 +163,8 @@ exports.update = async(request,response) => {
     await coursesModel.updateOne(
 
         {
-            // _id : request.params.id
-         _id : request.body.id
+            _id : request.params.id
+        //  _id : request.body.id
 
         },
         {

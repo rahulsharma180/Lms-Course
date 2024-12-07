@@ -1,6 +1,11 @@
 const coursesModel = require("../../models/courses");
 
 exports.create = async(request,response) => {
+    console.log(request.body);
+    // console.log(request.file); /// for single image
+    console.log(request.files); /// for multiple images
+
+    
     
     if(request.body.status == ''){
         request.body.status = 1;

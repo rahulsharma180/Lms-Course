@@ -15,6 +15,8 @@ function Viewcourse() {
   
   const [coursesIds, setCoursesIds] = useState([])
   
+  const [imagePath, setImagePath] = useState('');
+
   let multiSelect = (course_id)=>{
      let updateCoueserIds = [...coursesIds];
      if(updateCoueserIds.includes(course_id)){
@@ -121,6 +123,7 @@ function Viewcourse() {
   useEffect(() => {
    axios.post('http://localhost:5007/api/backend/courses/view')
    .then((result)=>{
+    setImagePath(result.data.imagePath)
     setCourses(result.data.data);
     // setStatus(); use in wscubetech  method case
   })
@@ -176,7 +179,7 @@ function Viewcourse() {
                           <td>{data.price}</td>
                           <td>{data.duration}</td>
                           {/* <td>{data.description}</td> */}
-                          <td>{data.image}</td>
+                          <td><img src={imagePath+data.image} width={150} height={150}/></td>
                           <td>
                             {data.status == 1 ? (
                               <button

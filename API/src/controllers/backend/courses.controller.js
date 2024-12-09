@@ -17,13 +17,20 @@ exports.create = async(request,response) => {
 
     data = new coursesModel({
         name : request.body.name,
-        image : request.body.image,
+        // image : request.body.image,
+        // image : request.file.filename,
         price : request.body.price,
         duration : request.body.duration,
         description : request.body.description,
         status : request.body.status,
         order : request.body.order,
     })
+
+    if (request.file != undefined){
+        if(request.file.filename != ''){
+            data.image = request.file.filename}
+        
+    }
 
     await data.save(data).then((result) => {
         const res = {
@@ -90,6 +97,7 @@ exports.view = async(request,response) => {
         const resp = {
           status: true,
           message: "Record Found Succefully!!",
+          imagePath:'http://localhost:5007/uploads/courses/',
           data: courseData,
         };
   
@@ -157,14 +165,18 @@ exports.update = async(request,response) => {
 
     data = {
         name : request.body.name,
-        image : request.body.image,
         price : request.body.price,
         duration : request.body.duration,
         description : request.body.description,
         status : request.body.status,
         order : request.body.order,
     }
-
+   
+        if (request.file != undefined){
+            if(request.file.filename != ''){
+                data.image = request.file.filename}
+            
+        }
     await coursesModel.updateOne(
 
         {

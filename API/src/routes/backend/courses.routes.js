@@ -9,21 +9,27 @@ const storage = multer.diskStorage({
       cb(null, 'uploads/courses')
     },
     filename: function (req, file, cb) {
+      // console.log(flie);
+      
         console.log(path.extname(file.originalname))
     //   const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9)
       cb(null, 'course-' +Date.now()+ path.extname(file.originalname))
     }
   })
   
-  const upload = multer({ storage: storage })
+  // const upload = multer({ storage: storage })
+  const uploadImage = multer({ storage: storage }).single('image');
+
 
 module.exports = app => {
     // route.post('/add',upload.none(),courseController.create);
     // route.post('/add',upload.single('image'),courseController.create);
     // route.post('/add',upload.array('images',3),courseController.create);
-    const cpUpload = upload.fields([{ name: 'image', maxCount: 1 }, { name: 'images', maxCount: 8 }])
+    // const cpUpload = upload.fields([{ name: 'image', maxCount: 1 }, { name: 'images', maxCount: 8 }])
 
-    route.post('/add',cpUpload,courseController.create);
+    // route.post('/add',cpUpload,courseController.create);
+    route.post('/add',uploadImage,courseController.create);
+
 
     route.post('/view',uploads.none(),courseController.view);
 
@@ -31,8 +37,9 @@ module.exports = app => {
 
     route.put('/change-status/',uploads.none(),courseController.changeStatus);
 
-    route.put('/update/:id',uploads.none(),courseController.update);
+    // route.put('/update/:id',uploads.none(),courseController.update);
     // route.put('/update/',courseController.update);
+    route.put('/update/:id',uploadImage,courseController.update);
 
 
     route.put('/delete/',uploads.none(),courseController.delete);

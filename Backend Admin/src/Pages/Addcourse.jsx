@@ -8,7 +8,7 @@ import prev from "../img/generic-image-file-icon-hi.png";
 import { useNavigate, useParams } from "react-router";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import axios from "axios";
+import axios, { toFormData } from "axios";
 
 // import AdminForms from '../Common/AdminForms'
 
@@ -32,19 +32,36 @@ function Addcourse() {
   let submitHandler = (event) => {
     event.preventDefault();
 
+    let form = new FormData(event.target);
+    console.log(form)
+    // let dataSave = {
+    //   name: event.target.course_name.value,
+    //   image: event.target.course_name.value,
+    //   price: event.target.course_price.value,
+    //   duration: event.target.course_duration.value,
+    //   description: event.target.course_description.value,
+    //   order: event.target.course_order.value,
+    //   status: event.target.course_status.value,
+    // };
+
+
     let dataSave = {
-      name: event.target.course_name.value,
-      image: event.target.course_name.value,
-      price: event.target.course_price.value,
-      duration: event.target.course_duration.value,
-      description: event.target.course_description.value,
-      order: event.target.course_order.value,
-      status: event.target.course_status.value,
+      name: form.get('course_name'),
+      price: form.get('course_price'),
+      image : form.get('course_image'),
+      duration: form.get('course_duration'),
+      description:form.get('course_description'),
+      order: form.get('course_order'),
+      status: form.get('course_status'),
     };
-    // axios.post('http://localhost:5007/api/backend/courses/add',toFormData(dataSave))
+
+      // if(form.get('course_image')==''){
+      //   dataSave.image = form.get('course_image');
+      // }
     if (params.course_id == undefined) {
-      axios
-        .post("http://localhost:5007/api/backend/courses/add", dataSave)
+      axios.post('http://localhost:5007/api/backend/courses/add',toFormData(dataSave))
+
+      // axios.post("http://localhost:5007/api/backend/courses/add", dataSave)
         .then((result) => {
           if (result.data.status == true) {
             toast.success(result.data.message);
@@ -189,9 +206,10 @@ function Addcourse() {
                 <div className="flex items-center gap-0 mt-[80px]">
                   <div className="w-full flex items-center">
                     <input
-                      type="text"
-                      readOnly
-                      placeholder="Upload File"
+                    name="course_image"
+                    type = 'file'
+                    onChange={inputHandler}
+                    laceholder="Upload File"
                       className=" px-4 rounded-[10px_0px_0px_10px] border border-gray-400 w-[70%] h-[50px]"
                     />
                     <label

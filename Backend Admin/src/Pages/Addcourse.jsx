@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
 import Header from "../Common/Header";
 import Sidebar from "../Common/Sidebar";
-// import DashboardItems from '../Common/DashboardItems'
+// import DashboardItems from '../Common/DashboardItems'  
 import Footer from "../Common/Footer";
 import { mainContext } from "../Context";
 import prev from "../img/generic-image-file-icon-hi.png";
@@ -28,12 +28,15 @@ function Addcourse() {
     course_status: "",
     course_order: "",
   });
-
+ 
   let submitHandler = (event) => {
     event.preventDefault();
 
     let form = new FormData(event.target);
     console.log(form)
+    // Jo data ham bhej rhe uske key name or database m key k name same hone chaiye
+    // tb toFormData kam karega
+
     // let dataSave = {
     //   name: event.target.course_name.value,
     //   image: event.target.course_name.value,
@@ -44,20 +47,21 @@ function Addcourse() {
     //   status: event.target.course_status.value,
     // };
 
-
+// idr hamne database se key match karne k liye dataSave ko re define kiya h
+// nhi to ham apne code mai name= "" ko rename krna pdata database k according-**************
     let dataSave = {
       name: form.get('course_name'),
       price: form.get('course_price'),
-      image : form.get('course_image'),
+      // image : form.get('course_image'),
       duration: form.get('course_duration'),
       description:form.get('course_description'),
       order: form.get('course_order'),
       status: form.get('course_status'),
     };
 
-      // if(form.get('course_image')==''){
-      //   dataSave.image = form.get('course_image');
-      // }
+      if(form.get('course_image')!=''){
+        dataSave.image = form.get('course_image');
+      }
     if (params.course_id == undefined) {
       axios.post('http://localhost:5007/api/backend/courses/add',toFormData(dataSave))
 
@@ -66,6 +70,7 @@ function Addcourse() {
           if (result.data.status == true) {
             toast.success(result.data.message);
             //
+            
 
             setTimeout(() => {
               navigate("/viewcourse");
@@ -79,15 +84,13 @@ function Addcourse() {
           toast.error("server not working !!");
         });
     } else {
-      axios
-        .put(
-          "http://localhost:5007/api/backend/courses/update/" +
-            params.course_id,
-          dataSave
-        )
-        .then((result) => {
+      // dataSave.id = params.course_id;
+      // axios.put('http://localhost:5007/api/backend/courses/update',toFormData(dataSave)) // in case of body id 
+      // axios.put("http://localhost:5007/api/backend/courses/update/"+params.course_id,dataSave)
+      axios.put("http://localhost:5007/api/backend/courses/update/"+params.course_id,toFormData(dataSave)) // in case of params id 
+      .then((result) => {
           if (result.data.status == true) {
-            toast.success(result.data.message);
+            toast.success(result.data.message,{autoClose: 2000});
 
             //
 
@@ -95,7 +98,7 @@ function Addcourse() {
               navigate("/viewcourse");
             }, 3000);
           } else {
-            toast.error(result.data.message);
+            toast.error(result.data.message,{autoClose: 2000});
           }
           //
         })
@@ -105,15 +108,23 @@ function Addcourse() {
     }
     console.log("hello");
   };
-
   useEffect(() => {
-    if (params.course_id != undefined) {
-      console.log(params.course_id);
-
+    if (params.course_id === undefined) {
+      // Reset the form fields when in "Add Course" mode
+      setInput({
+        course_name: "",
+        course_price: "",
+        course_duration: "",
+        course_description: "",
+        course_image: "",
+        course_status: "",
+        course_order: "",
+      });
+    } else {
+      // Fetch data for edit mode
       axios
         .post(
-          "http://localhost:5007/api/backend/courses/details/" +
-            params.course_id
+          "http://localhost:5007/api/backend/courses/details/" + params.course_id
         )
         .then((result) => {
           console.log(result.data);
@@ -131,7 +142,34 @@ function Addcourse() {
           toast.error("Something went wrong");
         });
     }
-  }, []);
+  }, [params.course_id]);
+  
+  // useEffect(() => {
+  //   if (params.course_id != undefined) {
+  //     console.log(params.course_id);
+
+  //     axios
+  //       .post(
+  //         "http://localhost:5007/api/backend/courses/details/" +
+  //           params.course_id
+  //       )
+  //       .then((result) => {
+  //         console.log(result.data);
+  //         setInput({
+  //           course_name: result.data.data.name,
+  //           course_price: result.data.data.price,
+  //           course_duration: result.data.data.duration,
+  //           course_description: result.data.data.description,
+  //           course_image: result.data.data.image,
+  //           course_status: result.data.data.status,
+  //           course_order: result.data.data.order,
+  //         });
+  //       })
+  //       .catch((error) => {
+  //         toast.error("Something went wrong");
+  //       });
+  //   }
+  // }, []);
 
   let inputHandler = (event) => {
     let data = { ...input };
@@ -198,18 +236,19 @@ function Addcourse() {
                   value={input.course_order}
                   className="border px-4 border-gray-400 w-full h-[50px] mb-3 mt-2 "
                 />
-                <input
+                {/* <input
                   type="file"
                   id="file-input"
                   className="border hidden border-gray-400 w-full h-[50px] mb-3 mt-2 "
-                />
+                /> */}
+                 <input type="file" name='course_image' id='file-input' className='border hidden border-gray-400 w-full h-[50px] mb-3 mt-2 '/>
                 <div className="flex items-center gap-0 mt-[80px]">
                   <div className="w-full flex items-center">
                     <input
                     name="course_image"
-                    type = 'file'
-                    onChange={inputHandler}
-                    laceholder="Upload File"
+                    type = 'text'
+                    readOnly
+                    placeholder="Upload File"
                       className=" px-4 rounded-[10px_0px_0px_10px] border border-gray-400 w-[70%] h-[50px]"
                     />
                     <label

@@ -21,6 +21,8 @@ require('./src/routes/backend/videos.routes')(server);
 // Frontend Routes 
 
 require('./src/routes/frontend/courses.routes')(server);
+require('./src/routes/frontend/users.routes')(server);
+
 
 
 server.get('*',(request, response) => {

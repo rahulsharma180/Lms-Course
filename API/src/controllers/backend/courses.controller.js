@@ -26,12 +26,11 @@ exports.create = async(request,response) => {
         order : request.body.order,
     })
 
-    if (request.file != undefined){
+    if(request.file != undefined){
         if(request.file.filename != ''){
-            data.image = request.file.filename}
-        
+            data.image = request.file.filename;
+        }
     }
-
     await data.save(data).then((result) => {
         const res = {
             status : true,
@@ -172,11 +171,11 @@ exports.update = async(request,response) => {
         order : request.body.order,
     }
    
-        if (request.file != undefined){
-            if(request.file.filename != ''){
-                data.image = request.file.filename}
-            
+    if(request.file != undefined){
+        if(request.file.filename != ''){
+            data.image = request.file.filename;
         }
+    }
     await coursesModel.updateOne(
 
         {

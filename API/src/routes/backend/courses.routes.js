@@ -39,7 +39,9 @@ module.exports = app => {
 
     // route.put('/update/:id',uploads.none(),courseController.update);
     // route.put('/update/',courseController.update);
-    route.put('/update/:id',uploadImage,courseController.update);
+    route.put('/update/:id',uploadImage,courseController.update);// incase of params Id
+    // route.put('/update/',uploadImage,courseController.update); // incase of body Id
+
 
 
     route.put('/delete/',uploads.none(),courseController.delete);

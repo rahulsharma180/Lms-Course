@@ -123,6 +123,7 @@ function Viewcourse() {
   useEffect(() => {
    axios.post('http://localhost:5007/api/backend/courses/view')
    .then((result)=>{
+    console.log(result.data.imagePath)
     setImagePath(result.data.imagePath)
     setCourses(result.data.data);
     // setStatus(); use in wscubetech  method case
@@ -179,6 +180,7 @@ function Viewcourse() {
                           <td>{data.price}</td>
                           <td>{data.duration}</td>
                           {/* <td>{data.description}</td> */}
+                            {/* <td>{imagePath+data.image}</td> */}
                           <td><img src={imagePath+data.image} width={150} height={150}/></td>
                           <td>
                             {data.status == 1 ? (

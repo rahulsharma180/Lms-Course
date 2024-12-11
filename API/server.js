@@ -25,6 +25,7 @@ require('./src/routes/frontend/users.routes')(server);
 
 
 
+
 server.get('*',(request, response) => {
     response.send('Page Not found......');
 })
@@ -32,7 +33,7 @@ server.get('*',(request, response) => {
 mongoose.connect('mongodb://127.0.0.1:27017/lms').then(() => {    
     server.listen('5007',() => {
         console.log('Database connected!') 
-    });
+    }); 
 }).catch((error) => {
     console.log('Database not connected!')
     console.log(error)

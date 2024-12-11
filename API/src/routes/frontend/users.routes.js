@@ -7,8 +7,10 @@ module.exports = app => {
 
     route.post('/send-mail',userController.sendMail);
 
-   
+    route.post('/register',userController.register);
+    route.post('/login',userController.login);
 
-    app.use('/api/frontend/mail',route);
+
+    app.use('/api/frontend/users',route);
 
 }

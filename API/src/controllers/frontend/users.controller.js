@@ -4,7 +4,7 @@ const usersModel = require("../../models/users");
 const bcrypt = require("bcrypt");
 var jwt = require('jsonwebtoken');
 
-var secretKey = '123456'
+var secretKey = '123456'  
 
 exports.sendMail = async (request, response) => {
   const transporter = nodemailer.createTransport({
@@ -61,10 +61,17 @@ exports.register = async (request, response) => {
   await data
     .save()
     .then((result) => {
+
+      var token =  jwt.sign({
+        // email: result.email
+        userData: result
+
+      }, secretKey, { expiresIn: '1h' });
       const resp = {
         status: true,
         message: "Record create succesfully",
-        result: result,
+        token : token,
+        // result: result, // for test purpose not use in frontend
       };
       response.send(resp);
     })
@@ -93,13 +100,17 @@ exports.login = async (request, response) => {
 
         if (compare) {
 
-        var token =  jwt.sign({email: result.email}, secretKey, { expiresIn: '1h' });
+        var token =  jwt.sign({
+          // email: result.email
+          userData: result
+
+        }, secretKey, { expiresIn: '1h' });
           var resp = {
             status: true,
             token : token,
             message: "login succesfully",
-            result: result,
-          };
+        // result: result, // for test purpose not use in frontend
+      };
         } else {
           var resp = {
             status: false,

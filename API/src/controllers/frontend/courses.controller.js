@@ -34,7 +34,7 @@ exports.view = async(request,response) => {
     if (!request.headers.authorization.split(' ')[1]) {
       return response.send({
         status: false,
-        tokken_error : true,
+        token_error : true,
         message: "Token Required!!",
       });
     }

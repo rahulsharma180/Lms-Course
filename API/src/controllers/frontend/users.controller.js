@@ -1,5 +1,4 @@
-const { request, response } = require("express");
-const nodemailer = require("nodemailer");
+ const nodemailer = require("nodemailer");
 const usersModel = require("../../models/users");
 const bcrypt = require("bcrypt");
 var jwt = require('jsonwebtoken');
@@ -138,3 +137,85 @@ exports.login = async (request, response) => {
       response.send(resp);
     });
 };
+
+
+
+exports.profile = async (request, response) => {
+ 
+  console.log(request.headers.authorization);
+  
+
+   if (request.headers.authorization == undefined) {
+   var res = {
+      status: false,
+      token_error : true,
+      message: "Token Required!!"
+    }
+     response.send(res);
+  } 
+
+  
+// Verify token asynchronously
+ jwt.verify(request.headers.authorization, secretKey, function(error, result) {
+         if(error){
+             const res = {
+                 status : false,
+                 token_error : true,
+                 message : 'Incorrect token'
+             }
+     
+             response.send(res);
+         } else {
+             const res = {
+                 status : true,
+                 message : 'Profile found.',
+                 data : result
+             }
+ 
+             response.send(res);
+         }   
+     })
+
+
+
+};
+
+// exports.profile = async (request, response) => {
+//   try {
+//     const token = request.headers.authorization;
+
+//     // Check if the token is provided
+//     if (!token) {
+//       return response.status(401).json({
+//         status: false,
+//         token_error: true,
+//         message: "Token required!",
+//       });
+//     }
+
+//     // Verify token asynchronously
+//     jwt.verify(token, secretKey, (error, decoded) => {
+//       if (error) {
+//         return response.status(401).json({
+//           status: false,
+//           token_error: true,
+//           message: "Invalid or expired token",
+//         });
+//       }
+
+//       // Respond with user profile if the token is valid
+//       response.status(200).json({
+//         status: true,
+//         message: "Profile found",
+//         data: decoded,
+//       });
+//     });
+//   } catch (err) {
+//     // Handle unexpected errors
+//     console.error("Unexpected error in profile verification:", err);
+//     response.status(500).json({
+//       status: false,
+//       message: "Internal server error",
+//     });
+//   }
+// };

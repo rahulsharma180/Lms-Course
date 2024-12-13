@@ -19,7 +19,7 @@ function Login() {
       password : event.target.password.value
     }
 
-      axios.post('http://localhost:5005/api/frontend/users/login',data)
+      axios.post('http://localhost:5007/api/frontend/users/login',data)
       .then((result) => {
         if(result.data.status == true){
           cookies.set('token',result.data.token);

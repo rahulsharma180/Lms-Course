@@ -29,10 +29,10 @@ function Header() {
         'authorization' : userToken
       }
     })
-    .then((success) => {
-      if(success.data.token_error == true){
-        cookies.remove('token');
-        nav('/');
+      .then((success) => {
+        if(success.data.token_error == true){
+          cookies.remove('token');
+          nav('/');
       } else {
         console.log(success.data);
       }
@@ -48,7 +48,7 @@ function Header() {
     <>
       <ToastContainer/>
       <header>
-    <nav className="bg-white border-gray-200  py-2.5 bg-white shadow-lg relative z-[999]">
+    <nav className="bg-white border-gray-200  py-2.5  shadow-lg relative z-[999]">
         <div className="flex items-center justify-between mx-auto ">
             <div className={` duration-[0.5s] mx-5  ${changemenu==true ? 'w-[3%] ':'w-[16%]'}`}>
             <a href="#" className="flex items-center">
